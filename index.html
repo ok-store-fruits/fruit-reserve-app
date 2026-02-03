@@ -499,7 +499,7 @@
                 }
                 const profile = await liff.getProfile();
                 userId = profile.userId;
-                
+                /*
                 // 受取日の最小値設定（2日後）
                 const minDate = new Date();
                 minDate.setDate(minDate.getDate() + 2);
@@ -509,6 +509,24 @@
                 const maxDate = new Date();
                 maxDate.setDate(maxDate.getDate() + 14);
                 document.getElementById('pickupDate').max = maxDate.toISOString().split('T')[0];
+                */
+                // --- ここから書き換え ---
+                const dateInput = document.getElementById('pickupDate');
+                const today = new Date();
+
+                // ① 最短の日（2日後）を計算
+                const minDate = new Date(today);
+                minDate.setDate(today.getDate() + 2);
+
+                // ② 最長の日（14日後）を計算
+                const maxDate = new Date(today);
+                maxDate.setDate(today.getDate() + 14);
+
+                // カレンダーに制限を反映
+                dateInput.min = minDate.toISOString().split('T')[0];
+                dateInput.max = maxDate.toISOString().split('T')[0];
+                // --- ここまで ---
+
                 
             } catch (error) {
                 console.error('LIFF初期化エラー:', error);
