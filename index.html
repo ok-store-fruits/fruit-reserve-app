@@ -400,8 +400,8 @@
                 <label>受取時間帯<span class="required">*</span></label>
                 <select id="pickupTime" required>
                     <option value="">選択してください</option>
-                    <option value="午前（9:00〜12:00）">午前（8:30〜12:00）</option>
-                    <option value="午後（13:00〜18:00）">午後（12:00〜18:00）</option>
+                    <option value="午前（8:30〜12:00）">午前（8:30〜12:00）</option>
+                    <option value="午後（12:00〜18:00）">午後（12:00〜18:00）</option>
                 </select>
             </div>
 
@@ -465,7 +465,7 @@
                 <div class="complete-note">
                     <p><strong>📍 お受取について</strong></p>
                     <p>・受取時に予約番号をお伝えください<br>
-                    ・青果部のカウンターでお渡しします<br>
+                    ・青果売場でお渡しします<br>
                     ・準備完了時にLINEでお知らせします</p>
                 </div>
             </div>
@@ -557,14 +557,14 @@
                 showError('error3', '受取時間帯を選択してください');
                 return;
             }
-            
+            /*
             // 水曜日チェック
             const pickupDate = new Date(date);
             if (pickupDate.getDay() === 3) {
                 showError('error3', '水曜日は定休日です。別の日をお選びください');
                 return;
             }
-            
+            */
             // 確認画面に値設定
             document.getElementById('confirmProduct').textContent = selectedProduct.name;
             document.getElementById('confirmPrice').textContent = '¥' + selectedProduct.price.toLocaleString();
