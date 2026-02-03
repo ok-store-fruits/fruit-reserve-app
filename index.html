@@ -545,6 +545,7 @@
         }
 
         // 確認画面へ
+        /*
         function goToConfirm() {
             const date = document.getElementById('pickupDate').value;
             const time = document.getElementById('pickupTime').value;
@@ -557,6 +558,51 @@
                 showError('error3', '受取時間帯を選択してください');
                 return;
             }
+           */
+            // --- この「goToConfirm」関数を探して、中身をこれに書き換えてください ---
+function goToConfirm() {
+    const dateInput = document.getElementById('pickupDate');
+    const dateValue = dateInput.value;
+    const timeValue = document.getElementById('pickupTime').value;
+    
+    // エラーメッセージを貯める箱
+    let errors = [];
+
+    // 1. 商品が選ばれているかチェック
+    if (!selectedProduct.id) {
+        errors.push("・商品が選択されていません。前の画面に戻って選択してください。");
+    }
+
+    // 2. 日付のチェック
+    if (!dateValue) {
+        errors.push("・受取日を選択してください。");
+    } else {
+        const selectedDate = new Date(dateValue);
+        selectedDate.setHours(0, 0, 0, 0);
+        
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        const minLimit = new Date(today);
+        minLimit.setDate(today.getDate() + 2); // 3日後
+        const maxLimit = new Date(today);
+        maxLimit.setDate(today.getDate() + 14); // 14日後
+
+        if (selectedDate < minLimit || selectedDate > maxLimit) {
+            errors.push("・受取日は3日後〜14日後の範囲で選択してください。");
+        }
+    }
+
+    // 3. 時間帯のチェック
+    if (!timeValue) {
+        errors.push("・受取時間帯を選択してください。");
+    }
+
+    // もしエラーが１つでもあれば、まとめてアラートで見せる
+    if (errors.length > 0) {
+        alert("入力内容に不備があります：\n\n" + errors.join("\n"));
+        return; // ここで処理を止めて、確認画面には進ませない
+    }
             /*
             // 水曜日チェック
             const pickupDate = new Date(date);
