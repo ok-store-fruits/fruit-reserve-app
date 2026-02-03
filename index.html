@@ -613,13 +613,20 @@ function goToConfirm() {
             }
             */
             // 確認画面に値設定
+       /*
             document.getElementById('confirmProduct').textContent = selectedProduct.name;
             document.getElementById('confirmPrice').textContent = '¥' + selectedProduct.price.toLocaleString();
             document.getElementById('confirmDate').textContent = date;
             document.getElementById('confirmTime').textContent = time;
             document.getElementById('confirmRemarks').textContent = 
                 document.getElementById('remarks').value || 'なし';
-            
+            */
+            document.getElementById('confirmProduct').textContent = selectedProduct.name;
+            document.getElementById('confirmPrice').textContent = '¥' + selectedProduct.price.toLocaleString();
+            document.getElementById('confirmDate').textContent = dateValue;
+            document.getElementById('confirmTime').textContent = timeValue;
+            document.getElementById('confirmRemarks').textContent = 
+            document.getElementById('remarks').value || 'なし';
             showScreen(4);
         }
 
