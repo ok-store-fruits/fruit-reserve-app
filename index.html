@@ -510,23 +510,36 @@
                 maxDate.setDate(maxDate.getDate() + 14);
                 document.getElementById('pickupDate').max = maxDate.toISOString().split('T')[0];
                 */
-                // --- ここから書き換え ---
+               // --- ここから最新の判定コード ---
                 const dateInput = document.getElementById('pickupDate');
                 const today = new Date();
+                today.setHours(0, 0, 0, 0); // 今日の時間を0時にリセット
 
-                // ① 最短の日（2日後）を計算
-                const minDate = new Date(today);
-                minDate.setDate(today.getDate() + 2);
+                // ① 制限の基準となる日を計算
+                const minLimit = new Date(today);
+                minLimit.setDate(today.getDate() + 3); // 3日後
+                
+                const maxLimit = new Date(today);
+                maxLimit.setDate(today.getDate() + 14); // 14日後
 
-                // ② 最長の日（14日後）を計算
-                const maxDate = new Date(today);
-                maxDate.setDate(today.getDate() + 14);
+                // ② カレンダーの見た目に制限をかける（効くブラウザ用）
+                dateInput.min = minLimit.toISOString().split('T')[0];
+                dateInput.max = maxLimit.toISOString().split('T')[0];
 
-                // カレンダーに制限を反映
-                dateInput.min = minDate.toISOString().split('T')[0];
-                dateInput.max = maxDate.toISOString().split('T')[0];
+                // ③ もしカレンダーで範囲外を強引に選んだ時のチェック
+                dateInput.addEventListener('change', function() {
+                    if (!this.value) return; // 空の場合は何もしない
+
+                    const selectedDate = new Date(this.value);
+                    selectedDate.setHours(0, 0, 0, 0); // 選んだ時間を0時にリセット
+
+                    // 判定：3日後より前、または14日後より後ろの場合
+                    if (selectedDate < minLimit || selectedDate > maxLimit) {
+                        alert('受取日は3日後〜14日後の範囲で選択してください。');
+                        this.value = ''; // 入力を白紙に戻す
+                    }
+                });
                 // --- ここまで ---
-
                 
             } catch (error) {
                 console.error('LIFF初期化エラー:', error);
