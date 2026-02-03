@@ -546,7 +546,7 @@
         }
 
         // 確認画面へ
-        /*
+        
         function goToConfirm() {
             const date = document.getElementById('pickupDate').value;
             const time = document.getElementById('pickupTime').value;
@@ -559,7 +559,7 @@
                 showError('error3', '受取時間帯を選択してください');
                 return;
             }
-           */
+       /*    
             // --- この「goToConfirm」関数を探して、中身をこれに書き換えてください ---
 function goToConfirm() {
     const dateInput = document.getElementById('pickupDate');
@@ -613,20 +613,21 @@ function goToConfirm() {
             }
             */
             // 確認画面に値設定
-       /*
+       
             document.getElementById('confirmProduct').textContent = selectedProduct.name;
             document.getElementById('confirmPrice').textContent = '¥' + selectedProduct.price.toLocaleString();
             document.getElementById('confirmDate').textContent = date;
             document.getElementById('confirmTime').textContent = time;
             document.getElementById('confirmRemarks').textContent = 
                 document.getElementById('remarks').value || 'なし';
-            */
+           /* 
             document.getElementById('confirmProduct').textContent = selectedProduct.name;
             document.getElementById('confirmPrice').textContent = '¥' + selectedProduct.price.toLocaleString();
             document.getElementById('confirmDate').textContent = dateValue;
             document.getElementById('confirmTime').textContent = timeValue;
             document.getElementById('confirmRemarks').textContent = 
             document.getElementById('remarks').value || 'なし';
+            */
             showScreen(4);
         }
 
