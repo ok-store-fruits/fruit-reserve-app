@@ -546,7 +546,7 @@
         }
 
         // 確認画面へ
-        
+        /*
         function goToConfirm() {
             const date = document.getElementById('pickupDate').value;
             const time = document.getElementById('pickupTime').value;
@@ -558,79 +558,82 @@
             if (!time) {
                 showError('error3', '受取時間帯を選択してください');
                 return;
-            }
-       /*    
-            // --- この「goToConfirm」関数を探して、中身をこれに書き換えてください ---
-function goToConfirm() {
-    const dateInput = document.getElementById('pickupDate');
-    const dateValue = dateInput.value;
-    const timeValue = document.getElementById('pickupTime').value;
-    
-    // エラーメッセージを貯める箱
-    let errors = [];
-
-    // 1. 商品が選ばれているかチェック
-    if (!selectedProduct.id) {
-        errors.push("・商品が選択されていません。前の画面に戻って選択してください。");
-    }
-
-    // 2. 日付のチェック
-    if (!dateValue) {
-        errors.push("・受取日を選択してください。");
-    } else {
-        const selectedDate = new Date(dateValue);
-        selectedDate.setHours(0, 0, 0, 0);
-        
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        
-        const minLimit = new Date(today);
-        minLimit.setDate(today.getDate() + 2); // 3日後
-        const maxLimit = new Date(today);
-        maxLimit.setDate(today.getDate() + 14); // 14日後
-
-        if (selectedDate < minLimit || selectedDate > maxLimit) {
-            errors.push("・受取日は3日後〜14日後の範囲で選択してください。");
-        }
-    }
-
-    // 3. 時間帯のチェック
-    if (!timeValue) {
-        errors.push("・受取時間帯を選択してください。");
-    }
-
-    // もしエラーが１つでもあれば、まとめてアラートで見せる
-    if (errors.length > 0) {
-        alert("入力内容に不備があります：\n\n" + errors.join("\n"));
-        return; // ここで処理を止めて、確認画面には進ませない
-    }
-            /*
-            // 水曜日チェック
-            const pickupDate = new Date(date);
-            if (pickupDate.getDay() === 3) {
-                showError('error3', '水曜日は定休日です。別の日をお選びください');
-                return;
-            }
-            */
-            // 確認画面に値設定
-       
+            }   
             document.getElementById('confirmProduct').textContent = selectedProduct.name;
             document.getElementById('confirmPrice').textContent = '¥' + selectedProduct.price.toLocaleString();
             document.getElementById('confirmDate').textContent = date;
             document.getElementById('confirmTime').textContent = time;
             document.getElementById('confirmRemarks').textContent = 
                 document.getElementById('remarks').value || 'なし';
-           /* 
-            document.getElementById('confirmProduct').textContent = selectedProduct.name;
-            document.getElementById('confirmPrice').textContent = '¥' + selectedProduct.price.toLocaleString();
-            document.getElementById('confirmDate').textContent = dateValue;
-            document.getElementById('confirmTime').textContent = timeValue;
-            document.getElementById('confirmRemarks').textContent = 
-            document.getElementById('remarks').value || 'なし';
-            */
+        
             showScreen(4);
         }
+        */
+        function goToConfirm() {
+    const dateInput = document.getElementById('pickupDate');
+    const dateValue = dateInput.value;
+    const timeValue = document.getElementById('pickupTime').value;
+    
+    let errors = [];
 
+    // 1. 商品チェック
+    if (!selectedProduct.id) {
+        errors.push("・商品が選択されていません。");
+    }
+
+    // 2. 日付チェック
+    if (!dateValue) {
+        errors.push("・受取日を選択してください。");
+    } else {
+        // 選択された日付（時刻を00:00:00に固定）
+        const selectedDate = new Date(dateValue);
+        selectedDate.setHours(0, 0, 0, 0);
+        
+        // 今日の日付（時刻を00:00:00に固定）
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        // 制限範囲の計算
+        const minLimit = new Date(today);
+        minLimit.setDate(today.getDate() + 2); // 2日後
+        
+        const maxLimit = new Date(today);
+        maxLimit.setDate(today.getDate() + 14); // 14日後
+
+        // 比較（時刻を揃えているので、日付単位で正確に判定できます）
+        if (selectedDate < minLimit || selectedDate > maxLimit) {
+            errors.push("・受取日は2日後〜14日後の範囲で選択してください。");
+        }
+
+        // 水曜日チェック（必要であれば復活させてください）
+        if (selectedDate.getDay() === 3) {
+            errors.push("・水曜日は定休日です。別の日をお選びください。");
+        }
+    }
+
+    // 3. 時間帯チェック
+    if (!timeValue) {
+        errors.push("・受取時間帯を選択してください。");
+    }
+
+    // エラーがある場合は表示して中断
+    if (errors.length > 0) {
+        alert("入力内容に不備があります：\n\n" + errors.join("\n"));
+        return;
+    }
+
+    // 確認画面に値をセット
+    document.getElementById('confirmProduct').textContent = selectedProduct.name;
+    document.getElementById('confirmPrice').textContent = '¥' + selectedProduct.price.toLocaleString();
+    document.getElementById('confirmDate').textContent = dateValue;
+    document.getElementById('confirmTime').textContent = timeValue;
+    document.getElementById('confirmRemarks').textContent = 
+        document.getElementById('remarks').value || 'なし';
+
+    showScreen(4);
+}
+
+        
         // 注文送信
         async function submitOrder() {
             showLoading(true);
