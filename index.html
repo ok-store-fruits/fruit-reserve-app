@@ -359,7 +359,7 @@
         <!-- 画面2: 商品選択 -->
         <div id="screen2" class="screen">
             <div class="error-msg" id="error2"></div>
-            
+            <!--
             <div class="product-card" onclick="selectProduct('P001', '家庭用盛り合わせ', 1500)" id="product-P001">
                 <img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=400" alt="家庭用">
                 <div class="product-name">家庭用盛り合わせ</div>
@@ -379,6 +379,14 @@
                 <div class="product-name">特選贈答用盛り合わせ</div>
                 <div class="product-price">¥5,000</div>
                 <div class="product-desc">厳選果物12種以上。大切な方への贈り物に最適な特選品です。</div>
+            </div>
+
+            <div class="btn-container">
+                <button class="btn btn-secondary" onclick="showScreen(1)">戻る</button>
+                <button class="btn btn-primary" onclick="goToDateTime()" id="btnNext2">次へ</button>
+            -->
+            <div id="productList">
+                <p style="text-align:center; padding:20px;">商品を読み込み中...</p>
             </div>
 
             <div class="btn-container">
@@ -500,6 +508,33 @@
                 }
                 const profile = await liff.getProfile();
                 userId = profile.userId;
+          
+                // GASから最新の商品情報を取得する ２月６日追加分
+    fetch(GAS_URL + '?type=products') // GAS側に「商品データちょうだい」とリクエスト
+        .then(res => res.json())
+        .then(products => {
+            const listEl = document.getElementById('productList');
+            listEl.innerHTML = ''; // 「読み込み中」を消す
+
+            products.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.id = 'product-' + p.id;
+                card.onclick = () => selectProduct(p.id, p.name, p.price);
+            
+                card.innerHTML = `
+                    <img src="${p.imageUrl}" alt="${p.name}">
+                    <div class="product-name">${p.name}</div>
+                    <div class="product-price">¥${p.price.toLocaleString()}</div>
+                    <div class="product-desc">${p.description}</div>
+                `;
+                listEl.appendChild(card);
+            });
+        })
+        .catch(err => {
+            console.error('商品取得エラー:', err);
+            document.getElementById('productList').innerHTML = '商品情報の取得に失敗しました';
+        });
                 
                 // 受取日の最小値設定（2日後）
                 const minDate = new Date();
